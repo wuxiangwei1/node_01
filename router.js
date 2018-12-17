@@ -1,5 +1,6 @@
 const express = require("express");
 const myjs = require("./js/test");
 const router = express.Router();
-router.get('/signin', myjs.showSigin)
+router.get('/signin', myjs.showSigin);
+router.post('/signin', myjs.handleSignin);
 module.exports = router;

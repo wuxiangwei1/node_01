@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>传智播客</title>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/public/css/login.css">
 </head>
@@ -16,7 +16,7 @@
             </a>
             <h1>用户登录</h1>
         </div>
-        <form id="signin_form">
+        <form id="signin_form" action="">
             <div class="form-group">
                 <label for="email">邮箱</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email" autofocus>
@@ -39,6 +39,19 @@
     </div>
     <script src="/node_modules/jquery/dist/jquery.js"></script>
     <script>
+        $("#signin_form").on("submit", function(e) {
+            // 取消默认事件
+            e.preventDefault();
+            // 获取表单中的数据
+            var formdata = $(this).serialize();
+            console.log(formdata);
+            // 发送ajax
+       	// $.ajax({})
+            $.post("/signin", formdata, (function(data) {
+                console.log(data);
+            }));
+        });
+        
     </script>
 </body>
 
