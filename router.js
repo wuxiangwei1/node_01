@@ -6,5 +6,7 @@ const router = express.Router();
 router
   .get('/signin', c_user.showSigin)
   .post('/signin', c_user.handleSignin)
-  .get('/', c_topic.showTopicList);
+  .get('/', c_topic.showTopicList)
+  .get('/topic/create', c_topic.showCreateTopic)
+  .post('/createTopic', c_topic.handleCreateTopic)
 module.exports = router;

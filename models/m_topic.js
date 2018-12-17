@@ -7,4 +7,12 @@ exports.findAllTopics = (callback) => {
     if(err) return callback(err);
     callback(null,data);
   })
-}
+};
+exports.addTopic = (body,callback) => {
+  // 向数据库中添加用户评论的数据
+  const sqlstr = `insert into topics set ?`;
+  connection.query(sqlstr, body, (err,data) => {
+    if(err) return callback(err);
+    callback(null,data);
+  });
+};
