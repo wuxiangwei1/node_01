@@ -28,4 +28,26 @@ exports.handleCreateTopic = (req,res) => {
     if(err) return res.send({code:500,msg:'服务器错误'});
     res.send({code:200,msg:'添加成功'});
   })
+};
+// 渲染文章列表页
+exports.showTopicDetail = (req,res) => {
+  // 获取请求中的变量(动态路由中传过来的参数当前评论的id值) req.params.形参
+  const topicID = req.params.topicID;
+  // 使用M中的函数来查询当前评论的信息
+  M_topic.findTopicById(topicID,(err,data) => {
+    if(err) return res.send({code:500,msg:'服务器的错'});
+  res.render("topic/show.html",{
+    topic: data[0],
+    sessionUserId: req.session.user ? req.session.user.id : 0 //判断用户是否登录，登录就把userID传过去，没登录就把根本没有的的一个userid值0传过去
+  });
+  })
+}
+// 删除当前评论列表
+exports.handleDeleTopic = (req,res) => {
+  const topicID = req.params.topicID;
+  M_topic.deleTopicById(topicID,(err,data) => {
+    if(err) return res.send({code:500,msg:'服务器错误'});
+    // 重定向到评论列表
+    res.redirect("/");
+  })
 }

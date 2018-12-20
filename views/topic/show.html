@@ -16,13 +16,17 @@
     <section class="container">
         <div class="row">
             <div class="col-md-9">
+                {{if !topic}}
                 <p>此话题不存在或已被删除。</p>
+                {{else}}
                 <a class="btn btn-success" href="/">返回首页</a>
                 <article class="markdown-body">
-                    <h1>话题标题</h1>
+                    <h1>{{topic.title}}</h1>
+                    {{if topic.userId === sessionUserId}}
                     <a href="/topic/detail/edit">编辑</a>
-                    <a href="/topic/detail/delete" id="delete_topic">删除</a>
-                    <hr> 话题内容
+                    <a href="/topic/delete/{{topic.id}}" id="delete_topic">删除</a>
+                    {{/if}}
+                    <hr> {{topic.content}}
                 </article>
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -48,6 +52,7 @@
                     </div>
                     <button type="submit" class="btn btn-success">回复</button>
                 </form>
+                {{/if}}
             </div>
         </div>
     </section>

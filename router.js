@@ -9,4 +9,7 @@ router
   .get('/', c_topic.showTopicList)
   .get('/topic/create', c_topic.showCreateTopic)
   .post('/createTopic', c_topic.handleCreateTopic)
+  .get('/signout',c_user.handleSignout)
+  .get('/detail/topic/:topicID', c_topic.showTopicDetail)
+  .get('/topic/delete/:topicID', c_topic.handleDeleTopic)//删除对应的评论数据
 module.exports = router;

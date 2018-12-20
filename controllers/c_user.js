@@ -15,7 +15,11 @@ exports.handleSignin = (req, res) => {
     if (data[0].password != body.password) return res.send({ code: 2, msg: "密码错误" });
     req.session.user = data[0];
     res.send({ code: 200, msg: "验证通过" });  //此处出现过bug，在send之后设置session，我怕是sb啊
-    
-    
   });
 };
+// 用户退出，清除session；
+exports.handleSignout = (req,res) => {
+  delete req.session.user;
+  // 重定向到登录页面
+  res.redirect('/signin');
+}
