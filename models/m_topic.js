@@ -31,3 +31,21 @@ exports.deleTopicById = (topicID,callback) => {
     callback(null,data);
   })
 }
+// 查询当前要修改的评论信息
+exports.findTopicById = (topicid,callback) => {
+  const sqlstr = `select * from topics where id = ${topicid}`;
+  connection.query(sqlstr, (err,data) => {
+    if(err) return callback(err);
+    callback(null,data);
+  })
+}
+//提交当前的编辑内容
+exports.editTopicById = (tid, body, callback) => {
+  const sqlstr = 'UPDATE topics SET ? WHERE id=?';
+  console.log(sqlstr);
+  console.log(body)
+  connection.query(sqlstr, [body, tid], (err,data) => {
+    if(err) return callback(err);
+    callback(null,data);
+  })
+}

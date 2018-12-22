@@ -38,6 +38,14 @@
     </div>
     <script src="/node_modules/jquery/dist/jquery.js"></script>
     <script>
+        $('#signup_form').on('submit',function (e) {
+            e.preventDefault();//阻止默认点击事件
+            var formdata = $(this).serialize();
+            $.post('/signup',formdata,function (data) {
+                if(data.code === 200)  return window.location.href = '/signin';
+                alert(data.msg)
+            })
+        })
     </script>
 </body>
 

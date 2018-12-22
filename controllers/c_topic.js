@@ -1,17 +1,16 @@
 // 导入数据处理模块，使用它封装好的函数
 const M_topic = require('../models/m_topic');
 const moment = require("moment");
-exports.showTopicList = (req,res) => {
+exports.showTopicList = (req,res,next) => {
   M_topic.findAllTopics((err,data) => {
-    if(err) return res.send({code:500,msg:'服务器崩溃了'});
+    if(err) return next(err);
     res.render('index.html', {
-      topics: data,
-      user: req.session.user
+      topics: data
     })
   })
 };
-exports.showCreateTopic = (req,res) => {
-  res.render('topic/create.html',{user: req.session.user})
+exports.showCreateTopic = (req,res,next) => {
+  res.render('topic/create.html')
 };
 
 
@@ -25,7 +24,7 @@ exports.handleCreateTopic = (req,res) => {
   body.userId = req.session.user.id;
   // 使用数据库封装好的数据处理函数
   M_topic.addTopic(body,(err,data) => {
-    if(err) return res.send({code:500,msg:'服务器错误'});
+    if(err) return next(err);
     res.send({code:200,msg:'添加成功'});
   })
 };
@@ -35,7 +34,7 @@ exports.showTopicDetail = (req,res) => {
   const topicID = req.params.topicID;
   // 使用M中的函数来查询当前评论的信息
   M_topic.findTopicById(topicID,(err,data) => {
-    if(err) return res.send({code:500,msg:'服务器的错'});
+    if(err) return next(err);
   res.render("topic/show.html",{
     topic: data[0],
     sessionUserId: req.session.user ? req.session.user.id : 0 //判断用户是否登录，登录就把userID传过去，没登录就把根本没有的的一个userid值0传过去
@@ -46,8 +45,27 @@ exports.showTopicDetail = (req,res) => {
 exports.handleDeleTopic = (req,res) => {
   const topicID = req.params.topicID;
   M_topic.deleTopicById(topicID,(err,data) => {
-    if(err) return res.send({code:500,msg:'服务器错误'});
+    if(err) return next(err);
     // 重定向到评论列表
     res.redirect("/");
+  })
+}
+// 展示编辑评论的页面
+exports.showEditTopic = (req,res) => {
+  const topicID = req.params.topicID;
+  M_topic.findTopicById(topicID, (err,data) => {
+    if(err) return next(err);
+    if(data.length === 0) return res.send({code:1,msg:'该文章已经被删除'})
+    res.render('topic/edit.html',{topic: data[0]});
+  })
+}
+//提交当前的编辑内容
+exports.handleEditTopic = (req,res) => {
+  const body = req.body;
+  const topicID = req.params.topicID;
+  // console.log(body,topicID);
+  M_topic.editTopicById(topicID, body, (err,data) =>{
+    if(err) return next(err);
+    res.send({code:200,msg:'修改成功'});    
   })
 }

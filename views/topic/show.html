@@ -16,14 +16,14 @@
     <section class="container">
         <div class="row">
             <div class="col-md-9">
-                {{if !topic}}
+                {{if !topic}}    <!--当topic查询出来为空的时候显示-->
                 <p>此话题不存在或已被删除。</p>
                 {{else}}
                 <a class="btn btn-success" href="/">返回首页</a>
                 <article class="markdown-body">
                     <h1>{{topic.title}}</h1>
                     {{if topic.userId === sessionUserId}}
-                    <a href="/topic/detail/edit">编辑</a>
+                    <a href="/topic/edit/{{topic.id}}">编辑</a>
                     <a href="/topic/delete/{{topic.id}}" id="delete_topic">删除</a>
                     {{/if}}
                     <hr> {{topic.content}}
